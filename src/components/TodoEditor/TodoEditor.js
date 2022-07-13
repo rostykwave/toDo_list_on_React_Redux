@@ -1,48 +1,36 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import todosActions from '../../redux/todos/todos-actions';
 import './TodoEditor.scss';
 
-class TodoEditor extends Component {
-  state = {
-    message: '',
-  };
+export default function TodoEditor({ onSave }) {
+  const [message, setMessage] = useState('');
+  const dispatch = useDispatch();
 
-  handleChange = e => {
-    this.setState({ message: e.currentTarget.value });
-  };
-
-  handleSubmit = e => {
+  const handleChange = e => setMessage(e.target.value);
+  const handleSubmit = e => {
     e.preventDefault();
 
-    if (this.state.message !== '') {
-      this.props.onSubmit(this.state.message);
-      this.setState({ message: '' });
-      this.props.onSave();
-      return;
+    if (message === '') {
+      return alert('Do not leave the field blank!');
     }
 
-    alert('Do not leave the field blank!');
+    dispatch(todosActions.addTodo(message));
+    // onSubmit(message);
+    onSave();
+    setMessage('');
   };
 
-  render() {
-    return (
-      <form className="TodoEditor" onSubmit={this.handleSubmit}>
-        <textarea
-          className="TodoEditor__textarea"
-          value={this.state.message}
-          onChange={this.handleChange}
-        ></textarea>
-        <button type="submit" className="TodoEditor__button">
-          Save
-        </button>
-      </form>
-    );
-  }
+  return (
+    <form className="TodoEditor" onSubmit={handleSubmit}>
+      <textarea
+        className="TodoEditor__textarea"
+        value={message}
+        onChange={handleChange}
+      ></textarea>
+      <button type="submit" className="TodoEditor__button">
+        Save
+      </button>
+    </form>
+  );
 }
-
-const mapDispatchToProps = dispatch => ({
-  onSubmit: text => dispatch(todosActions.addTodo(text)),
-});
-
-export default connect(null, mapDispatchToProps)(TodoEditor);
