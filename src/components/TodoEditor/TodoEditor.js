@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import todosActions from '../../redux/todos/todos-actions';
+import todosOperations from '../../redux/todos/todos-operations';
 import './TodoEditor.scss';
 
 export default function TodoEditor({ onSave }) {
@@ -15,7 +15,7 @@ export default function TodoEditor({ onSave }) {
       return alert('Do not leave the field blank!');
     }
 
-    dispatch(todosActions.addTodo(message));
+    dispatch(todosOperations.addTodo(message));
     // onSubmit(message);
     onSave();
     setMessage('');

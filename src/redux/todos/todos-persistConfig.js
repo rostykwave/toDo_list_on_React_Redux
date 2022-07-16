@@ -1,7 +1,7 @@
-import storage from 'redux-persist/lib/storage';
+// import storage from 'redux-persist/lib/storage';
 
-export const todosPersistConfig = {
-  key: 'todos',
-  storage,
-  blacklist: ['filter'],
-};
+// export const todosPersistConfig = {
+//   key: 'todos',
+//   storage,
+//   blacklist: ['filter'],
+// };

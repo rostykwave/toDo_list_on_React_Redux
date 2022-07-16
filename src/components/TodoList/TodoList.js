@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import todosActions from '../../redux/todos/todos-actions';
+import { deleteTodo, toggleCompleted } from '../../redux/todos/todos-actions';
 import classNames from 'classnames';
 import Todo from '../Todo';
 import './TodoList.scss';
@@ -8,8 +8,8 @@ import { getVisibleTodos } from 'redux/todos/todos-selectors';
 const TodoList = () => {
   const todos = useSelector(getVisibleTodos);
   const dispatch = useDispatch();
-  const onDeleteTodo = id => dispatch(todosActions.deleteTodo(id));
-  const onToggleCompleted = id => dispatch(todosActions.toggleCompleted(id));
+  const onDeleteTodo = id => dispatch(deleteTodo(id));
+  const onToggleCompleted = id => dispatch(toggleCompleted(id));
 
   return (
     <ul className="TodoList">
