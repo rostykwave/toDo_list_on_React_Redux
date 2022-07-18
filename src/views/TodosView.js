@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Container from '../components/Container';
 import TodoList from '../components/TodoList';
 import TodoEditor from '../components/TodoEditor';
@@ -8,6 +9,8 @@ import Modal from '../components/Modal';
 import IconButton from '../components/IconButton';
 // import { ReactComponent as AddIcon } from '../icons/add.svg';
 import { MdOutlineNoteAdd } from 'react-icons/md';
+import todosOperations from 'redux/todos/todos-operations';
+// import { useDispatch } from 'react-redux';
 
 const barStyles = {
   display: 'flex',
@@ -19,6 +22,10 @@ class TodosView extends Component {
   state = {
     showModal: false,
   };
+
+  componentDidMount() {
+    this.props.fetchTodos();
+  }
 
   toggleModal = () => {
     this.setState(({ showModal }) => ({
@@ -38,6 +45,8 @@ class TodosView extends Component {
             <MdOutlineNoteAdd size={50} fill="#fff" />
             {/* <AddIcon width="40" height="40" fill="#fff" /> */}
           </IconButton>
+
+          {this.props.isLoadingTodos && <h1>Loading...</h1>}
         </div>
 
         <TodoList />
@@ -52,4 +61,14 @@ class TodosView extends Component {
   }
 }
 
-export default TodosView;
+const mapStateToProps = state => ({
+  isLoadingTodos: state.todos.loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchTodos: () => dispatch(todosOperations.fetchTodos()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodosView);
+
+// export default TodosView;
