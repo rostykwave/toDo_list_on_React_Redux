@@ -8,9 +8,10 @@ import Modal from '../components/Modal';
 import IconButton from '../components/IconButton';
 // import { ReactComponent as AddIcon } from '../icons/add.svg';
 import { MdOutlineNoteAdd } from 'react-icons/md';
-import todosOperations from 'redux/todos/todos-operations';
+// import todosOperations from 'redux/todos/todos-operations';
 import { useSelector, useDispatch } from 'react-redux';
-import { getLoading } from 'redux/todos/todos-selectors';
+// import { getLoading } from 'redux/todos/todos-selectors';
+import { todosOperations, todosSelectors } from 'redux/todos';
 
 const barStyles = {
   display: 'flex',
@@ -20,7 +21,7 @@ const barStyles = {
 
 const TodosView = () => {
   const [showModal, setShowModal] = useState(false);
-  const isLoadingTodos = useSelector(getLoading);
+  const isLoadingTodos = useSelector(todosSelectors.getLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import todosOperations from '../../redux/todos/todos-operations';
+import { todosOperations } from 'redux/todos';
 import './TodoEditor.scss';
 
 export default function TodoEditor({ onSave }) {

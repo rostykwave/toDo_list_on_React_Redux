@@ -16,7 +16,7 @@ import {
 
 axios.defaults.baseURL = 'https://62c6dc952b03e73a58d905e0.mockapi.io';
 
-const fetchTodos = () => async dispatch => {
+export const fetchTodos = () => async dispatch => {
   dispatch(fetchTodosRequest());
 
   try {
@@ -31,7 +31,7 @@ const fetchTodos = () => async dispatch => {
   //     .catch(error => dispatch(fetchTodosError(error)));
 };
 
-const addTodo = text => dispatch => {
+export const addTodo = text => dispatch => {
   const todo = { text, completed: false };
 
   dispatch(addTodoRequest());
@@ -47,7 +47,7 @@ const addTodo = text => dispatch => {
   // .catch(error => dispatch({ type: 'todos/addTodoError', payload: error }));
 };
 
-const deleteTodo = todoId => dispatch => {
+export const deleteTodo = todoId => dispatch => {
   dispatch(deleteTodoRequest());
 
   axios
@@ -56,7 +56,7 @@ const deleteTodo = todoId => dispatch => {
     .catch(error => dispatch(deleteTodoError(error)));
 };
 
-const toggleCompleted =
+export const toggleCompleted =
   ({ id, completed }) =>
   dispatch => {
     const update = { completed };
@@ -67,6 +67,3 @@ const toggleCompleted =
       .then(({ data }) => dispatch(toggleCompletedSuccess(data)))
       .catch(error => dispatch(toggleCompletedError(error)));
   };
-
-const operations = { fetchTodos, addTodo, deleteTodo, toggleCompleted };
-export default operations;

@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
-import { getCompleted, getTotal } from 'redux/todos/todos-selectors';
+import { todosSelectors } from 'redux/todos';
 import './Stats.scss';
 
 const Stats = () => {
-  const total = useSelector(getTotal);
-  const completed = useSelector(getCompleted);
+  const total = useSelector(todosSelectors.getTotal);
+  const completed = useSelector(todosSelectors.getCompleted);
   return (
     <div className="Stats">
       <p className="Stats__item">

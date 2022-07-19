@@ -1,12 +1,11 @@
-import './TodoFilter.scss';
-import { changeFilter } from '../../redux/todos/todos-actions';
-import { getFilter } from 'redux/todos/todos-selectors';
+import { todosSelectors, todosActions } from 'redux/todos';
 import { useSelector, useDispatch } from 'react-redux';
+import './TodoFilter.scss';
 
 const TodoFilter = () => {
-  const value = useSelector(getFilter);
+  const value = useSelector(todosSelectors.getFilter);
   const dispatch = useDispatch();
-  const onChange = e => dispatch(changeFilter(e.target.value));
+  const onChange = e => dispatch(todosActions.changeFilter(e.target.value));
 
   return (
     <div className="TodoFilter">
