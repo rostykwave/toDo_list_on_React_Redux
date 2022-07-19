@@ -44,7 +44,16 @@ const loading = createReducer(false, {
 const filter = createReducer('', {
   [changeFilter]: (_, { payload }) => payload,
 });
-const error = createReducer(null, {});
+const error = createReducer(null, {
+  [fetchTodosError]: (_, action) => action.payload,
+  [fetchTodosRequest]: () => null,
+  [addTodoError]: (_, action) => action.payload,
+  [addTodoRequest]: () => null,
+  [deleteTodoError]: (_, action) => action.payload,
+  [deleteTodoRequest]: () => null,
+  [toggleCompletedError]: (_, action) => action.payload,
+  [toggleCompletedRequest]: () => null,
+});
 
 export default combineReducers({
   items,
