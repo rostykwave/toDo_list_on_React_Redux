@@ -23,14 +23,9 @@ const TodosView = () => {
   const isLoadingTodos = useSelector(getLoading);
   const dispatch = useDispatch();
 
-  const fetchTodos = () => {
-    dispatch(todosOperations.fetchTodos());
-  };
-
   useEffect(() => {
-    fetchTodos();
-    // eslint-disable-next-line
-  }, []);
+    dispatch(todosOperations.fetchTodos());
+  }, [dispatch]);
 
   const toggleModal = () => {
     setShowModal(!showModal);
