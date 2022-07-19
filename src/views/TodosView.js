@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useEffect, useState } from 'react';
 import Container from '../components/Container';
 import TodoList from '../components/TodoList';
 import TodoEditor from '../components/TodoEditor';
@@ -10,7 +9,8 @@ import IconButton from '../components/IconButton';
 // import { ReactComponent as AddIcon } from '../icons/add.svg';
 import { MdOutlineNoteAdd } from 'react-icons/md';
 import todosOperations from 'redux/todos/todos-operations';
-// import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getLoading } from 'redux/todos/todos-selectors';
 
 const barStyles = {
   display: 'flex',
@@ -18,57 +18,104 @@ const barStyles = {
   marginBottom: 20,
 };
 
-class TodosView extends Component {
-  state = {
-    showModal: false,
+const TodosView = () => {
+  const [showModal, setShowModal] = useState(false);
+  const isLoadingTodos = useSelector(getLoading);
+  const dispatch = useDispatch();
+
+  const fetchTodos = () => {
+    dispatch(todosOperations.fetchTodos());
   };
 
-  componentDidMount() {
-    this.props.fetchTodos();
-  }
+  useEffect(() => {
+    fetchTodos();
+    // eslint-disable-next-line
+  }, []);
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
-  render() {
-    const { showModal } = this.state;
+  return (
+    <Container>
+      <div style={barStyles}>
+        <Filter />
+        <Stats />
+        <IconButton onClick={toggleModal} aria-label="Add todo">
+          <MdOutlineNoteAdd size={50} fill="#fff" />
+        </IconButton>
 
-    return (
-      <Container>
-        <div style={barStyles}>
-          <Filter />
-          <Stats />
-          <IconButton onClick={this.toggleModal} aria-label="Add todo">
-            <MdOutlineNoteAdd size={50} fill="#fff" />
-            {/* <AddIcon width="40" height="40" fill="#fff" /> */}
-          </IconButton>
+        {isLoadingTodos && <h1>Loading...</h1>}
+      </div>
 
-          {this.props.isLoadingTodos && <h1>Loading...</h1>}
-        </div>
+      <TodoList />
 
-        <TodoList />
+      {showModal && (
+        <Modal onClose={toggleModal}>
+          <TodoEditor onSave={toggleModal} />
+        </Modal>
+      )}
+    </Container>
+  );
+};
 
-        {showModal && (
-          <Modal onClose={this.toggleModal}>
-            <TodoEditor onSave={this.toggleModal} />
-          </Modal>
-        )}
-      </Container>
-    );
-  }
-}
+export default TodosView;
 
-const mapStateToProps = state => ({
-  isLoadingTodos: state.todos.loading,
-});
+// class TodosView extends Component {
+//   state = {
+//     showModal: false,
+//   };
 
-const mapDispatchToProps = dispatch => ({
-  fetchTodos: () => dispatch(todosOperations.fetchTodos()),
-});
+//   componentDidMount() {
+//     this.props.fetchTodos();
+//     // const dispatch = useDispatch();
+//     // const fetchTodos=()=>{dispatch(todosOperations.fetchTodos())}
+//   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodosView);
+//   toggleModal = () => {
+//     this.setState(({ showModal }) => ({
+//       showModal: !showModal,
+//     }));
+//   };
 
-// export default TodosView;
+//   render() {
+//     const { showModal } = this.state;
+
+//     return (
+//       <Container>
+//         <div style={barStyles}>
+//           <Filter />
+//           <Stats />
+//           <IconButton onClick={this.toggleModal} aria-label="Add todo">
+//             <MdOutlineNoteAdd size={50} fill="#fff" />
+//             {/* <AddIcon width="40" height="40" fill="#fff" /> */}
+//           </IconButton>
+
+//           {this.props.isLoadingTodos && <h1>Loading...</h1>}
+//         </div>
+
+//         <TodoList />
+
+//         {showModal && (
+//           <Modal onClose={this.toggleModal}>
+//             <TodoEditor onSave={this.toggleModal} />
+//           </Modal>
+//         )}
+//       </Container>
+//     );
+//   }
+// }
+
+// const mapStateToProps = state => ({
+//   isLoadingTodos: getLoading(state),
+// });
+
+// // const isLoadingTodos = useSelector(getLoading);
+
+// const mapDispatchToProps = dispatch => ({
+//   fetchTodos: () => dispatch(todosOperations.fetchTodos()),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(TodosView);
+
+// // export default TodosView;
