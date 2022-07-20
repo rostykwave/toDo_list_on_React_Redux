@@ -1,8 +1,9 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
-  fetchTodosRequest,
-  fetchTodosSuccess,
-  fetchTodosError,
+  // fetchTodosRequest,
+  // fetchTodosSuccess,
+  // fetchTodosError,
   addTodoRequest,
   addTodoSuccess,
   addTodoError,
@@ -16,20 +17,28 @@ import {
 
 axios.defaults.baseURL = 'https://62c6dc952b03e73a58d905e0.mockapi.io';
 
-export const fetchTodos = () => async dispatch => {
-  dispatch(fetchTodosRequest());
+// export const fetchTodos = () => async dispatch => {
+//   dispatch(fetchTodosRequest());
 
-  try {
-    const { data } = await axios.get('/todos');
-    dispatch(fetchTodosSuccess(data));
-  } catch (error) {
-    dispatch(fetchTodosError(error));
+//   try {
+//     const { data } = await axios.get('/todos');
+//     dispatch(fetchTodosSuccess(data));
+//   } catch (error) {
+//     dispatch(fetchTodosError(error));
+//   }
+// };
+
+export const fetchTodos = createAsyncThunk(
+  'todos/fetchTodos',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get('/todos');
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
-  // axios
-  //     .get('/todos')
-  //     .then(({ data }) => dispatch(fetchTodosSuccess(data)))
-  //     .catch(error => dispatch(fetchTodosError(error)));
-};
+);
 
 export const addTodo = text => dispatch => {
   const todo = { text, completed: false };

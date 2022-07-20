@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import {
-  fetchTodosRequest,
-  fetchTodosSuccess,
-  fetchTodosError,
+  // fetchTodosRequest,
+  // fetchTodosSuccess,
+  // fetchTodosError,
   addTodoRequest,
   addTodoSuccess,
   addTodoError,
@@ -15,9 +15,11 @@ import {
   changeFilter,
 } from './todos-actions';
 import { createReducer } from '@reduxjs/toolkit';
+import { fetchTodos } from 'redux/todos/todos-operations';
 
 const items = createReducer([], {
-  [fetchTodosSuccess]: (_, { payload }) => payload,
+  [fetchTodos.fulfilled]: (_, { payload }) => payload,
+  // [fetchTodosSuccess]: (_, { payload }) => payload,
   [addTodoSuccess]: (state, { payload }) => [...state, payload],
   // [actions.addTodo]: (state, { payload }) => [...state, payload],
   [deleteTodoSuccess]: (state, { payload }) =>
@@ -27,9 +29,9 @@ const items = createReducer([], {
 });
 
 const loading = createReducer(false, {
-  [fetchTodosRequest]: () => true,
-  [fetchTodosSuccess]: () => false,
-  [fetchTodosError]: () => false,
+  [fetchTodos.pending]: () => true,
+  [fetchTodos.fulfilled]: () => false,
+  [fetchTodos.rejected]: () => false,
   [addTodoRequest]: () => true,
   [addTodoSuccess]: () => false,
   [addTodoError]: () => false,
@@ -45,8 +47,8 @@ const filter = createReducer('', {
   [changeFilter]: (_, { payload }) => payload,
 });
 const error = createReducer(null, {
-  [fetchTodosError]: (_, action) => action.payload,
-  [fetchTodosRequest]: () => null,
+  [fetchTodos.rejected]: (_, action) => action.payload,
+  [fetchTodos.pending]: () => null,
   [addTodoError]: (_, action) => action.payload,
   [addTodoRequest]: () => null,
   [deleteTodoError]: (_, action) => action.payload,
